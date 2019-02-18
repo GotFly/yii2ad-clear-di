@@ -1,0 +1,50 @@
+#legaltech api
+server {
+    listen 80;
+    listen 443;
+
+    server_name _;
+
+    client_max_body_size 20m;
+
+    gzip    on;
+    root    /www/app/frontend/web;
+    charset    utf-8;
+
+    location / {
+        index index.html index.php;
+        if (!-e $request_filename){
+            rewrite ^/(.*) /index.php?r=$1 last;
+        }
+    }
+
+    location ~* ^.+.(css|png|jpg|jpeg|gif|ico|ttf|woff)$ {
+        add_header      Access-Control-Allow-Origin *;
+        access_log      off;
+        expires         max;
+    }
+
+    location ~ \.php$ {
+	try_files $uri = 404;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+    location ~ /\.ht {
+        deny  all;
+    }
+
+}
