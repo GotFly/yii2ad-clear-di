@@ -25,7 +25,7 @@ return [
         'log' => [
             'targets' => [
                 [
-                    'class' => 'yii\log\FileTarget',
+                    'class' => \common\components\logs\FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
             ],
